@@ -1,4 +1,4 @@
-name: Run test suite on PR
+name: Run test suite on PR Redian
 
 on:
   pull_request:
