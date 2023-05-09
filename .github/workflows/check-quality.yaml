@@ -28,7 +28,7 @@ jobs:
       - name: Run Tests
         run: pytest -n auto
       - name: Run Tests with Coverage
-        run: pytest --cov=my_module ../tests/test_main.py --cov-report=xml
+        run: pytest --cov=my_module ../../tests/test_main.py --cov-report=xml
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
