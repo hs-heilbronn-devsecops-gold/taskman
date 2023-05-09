@@ -3,6 +3,8 @@ name: Check quality of code Redian
 on:
   pull_request:
     types: [opened]
+  push:
+    branches: ['RedianBranch']
 
 jobs:
   build:
