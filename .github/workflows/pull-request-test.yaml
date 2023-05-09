@@ -21,3 +21,5 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pytest
         run: pytest --cov=taskman -n auto
+      - name: Run Tests with Coverage
+        run: pytest --cov= --cov-report=xml
