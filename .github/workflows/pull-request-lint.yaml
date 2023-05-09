@@ -3,6 +3,8 @@ name: Check with linter on PR Redian
 on:
   pull_request:
     types: [opened]
+  push:
+    branches: ['RedianBranch']
 
 jobs:
   build:
