@@ -33,7 +33,3 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-      - name: Synk Security Scan 
-        uses: snyk/actions/python-3.9@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
