@@ -4,7 +4,8 @@ on:
   pull_request:
     types: [opened]
   push:
-    branches: ['RedianBranch']
+    branches:
+      - main
 
 jobs:
   build:
