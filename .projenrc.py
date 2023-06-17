@@ -10,7 +10,10 @@ project = PythonProject(
         'fastapi',
         'google-cloud-storage',
         'redis',
-        'uvicorn[standard]'
+        'uvicorn[standard]',
+        'opentelemetry-instrumentation-fastapi',
+        'opentelemetry-api',
+        'opentelemetry-sdk'
     ],
     dev_deps=[
         'attrs',
