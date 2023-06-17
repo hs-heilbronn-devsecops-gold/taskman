@@ -9,7 +9,7 @@ tasks:
 
 ports:
     - name: Backend
-      port: 8000
+      port: 8002
       onOpen: open-browser
 
 jetbrains:
