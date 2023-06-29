@@ -28,6 +28,7 @@ app = FastAPI()
 
 my_backend: Optional[Backend] = None
 
+
 def get_backend() -> Backend:
     global my_backend  # pylint: disable=global-statement
     if my_backend is None:
@@ -40,17 +41,19 @@ def get_backend() -> Backend:
             my_backend = MemoryBackend()
     return my_backend
 
+@app.get('/kashaf')
+def helloKashaf():
+    return {"message": "Hello Kashaf"}
+
 
 @app.get('/')
 def redirect_to_tasks() -> None:
     return RedirectResponse(url='/tasks')
 
 
-
 @app.get('/tasks')
 def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
     keys = backend.keys()
-
     tasks = []
     for key in keys:
         tasks.append(backend.get(key))
@@ -62,12 +65,13 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
 
-    # current_span = trace.get_current_span()
-    # if current_span:
-    #     current_span.set_attribute('task.id', task_id)
-    #     current_span.set_attribute('task.name', "This is Span - Method two")
-    #     current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
+    current_span = trace.get_current_span()
+    if current_span:
+        current_span.set_attribute('task.id', task_id)
+        current_span.set_attribute('task.name', "This is Span - Method two")
+        current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
     return backend.get(task_id)
+
 
 @app.put('/tasks/{item_id}')
 def update_task(task_id: str,
@@ -83,13 +87,15 @@ def create_task(request: TaskRequest,
     backend.set(task_id, request)
     return task_id
 
-
 provider = TracerProvider()
 processor = BatchSpanProcessor(ConsoleSpanExporter())
 provider.add_span_processor(processor)
 
+
+# Sets the global default tracer provider
 trace.set_tracer_provider(provider)
 
-trace = trace.get_tracer("my.tracer.name")
+# Creates a tracer from the global tracer provider
+tracer = trace.get_tracer("my.tracer.name")
 
 FastAPIInstrumentor.instrument_app(app)
