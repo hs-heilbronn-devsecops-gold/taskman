@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from uuid import uuid4
 from typing import List, Optional
 from os import getenv
@@ -8,6 +7,22 @@ from fastapi import Depends, FastAPI
 from starlette.responses import RedirectResponse
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
 from .model import Task, TaskRequest
+from pydantic import BaseModel
+from starlette.responses import RedirectResponse
+from redis import Redis
+
+import fastapi
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import (
+    BatchSpanProcessor,
+    ConsoleSpanExporter,
+)
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.semconv.trace import SpanAttributes
+from opentelemetry.trace import get_current_span
+from opentelemetry.trace.status import StatusCode
+
 
 app = FastAPI()
 
@@ -61,3 +76,15 @@ def create_task(request: TaskRequest,
     task_id = str(uuid4())
     backend.set(task_id, request)
     return task_id
+
+provider = TracerProvider()
+processor = BatchSpanProcessor(ConsoleSpanExporter())
+provider.add_span_processor(processor)
+
+# Sets the global default tracer provider
+trace.set_tracer_provider(provider)
+
+# Creates a tracer from the global tracer provider
+tracer = trace.get_tracer("my.tracer.name")
+
+FastAPIInstrumentor.instrument_app(app)
