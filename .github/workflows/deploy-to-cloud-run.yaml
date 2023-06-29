@@ -15,7 +15,7 @@ jobs:
       REGISTRY: ghcr.io
       REGION: europe-west3
       IMAGE_NAME: ${{ github.repository }}
-      SERVICE: taskman-hs-heilbronn-devsecop-kis
+      SERVICE: taskman-hs-heilbronn-devsecop-gold
    
     permissions:
       contents: 'read'
@@ -125,7 +125,7 @@ jobs:
         id: 'deploy'
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
-         service: 'taskman-hs-heilbronn-devsecop-kis'
+         service: 'taskman-hs-heilbronn-devsecop-gold'
          image: 'docker.io/magesh02/hs-heilbronn-devsecop-gold:latest'
          env_vars: BACKEND=memory
          region: ${{env.REGION}}
