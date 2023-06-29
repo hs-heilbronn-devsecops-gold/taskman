@@ -41,10 +41,6 @@ def get_backend() -> Backend:
             my_backend = MemoryBackend()
     return my_backend
 
-@app.get('/kashaf')
-def helloKashaf():
-    return {"message": "Hello Kashaf"}
-
 
 @app.get('/')
 def redirect_to_tasks() -> None:
