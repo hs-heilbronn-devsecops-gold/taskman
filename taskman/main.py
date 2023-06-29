@@ -57,6 +57,7 @@ def get_tasks(backend: Annotated[Backend, Depends(get_backend)]) -> List[Task]:
         
     return tasks
 
+
 @app.get('/tasks/{task_id}')
 def get_task(task_id: str,
              backend: Annotated[Backend, Depends(get_backend)]) -> Task:
@@ -67,7 +68,6 @@ def get_task(task_id: str,
     #     current_span.set_attribute('task.name', "This is Span - Method two")
     #     current_span.set_attribute(SpanAttributes.HTTP_METHOD, "GET")
     return backend.get(task_id)
-
 
 @app.put('/tasks/{item_id}')
 def update_task(task_id: str,
